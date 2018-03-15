@@ -1,20 +1,20 @@
 # README
 
-## �T�v
-�v���L�V�������ϐ��ւ̒ǉ��A�폜���s���B
-��ɎГ�?�ЊO�̃l�b�g���[�N�̐؂�ւ����ɗp����
+## 概要
+プロキシ情報を環境変数への追加、削除を行う。
+主に社内?社外のネットワークの切り替え時に用いる
 
 
-�@
-## �����ݒ�
-�{�c�[���Ɠ�������ݒ�t�@�C���iSetPrpxy.exe.config�j��appSettings�����[�U�[���ɍ��킹�ď��������Ă��������B  
+　
+## 初期設定
+本ツールと同梱する設定ファイル（SetPrpxy.exe.config）のappSettingsをユーザー環境に合わせて書き換えてください。  
 
 
-��j  
+例）  
 ```xml:App.config
 <appSettings>
-        <add key="proxyServer" value="160.240.128.92" />
-        <add key="proxyPort" value="10080" />
+        <add key="proxyServer" value="****" />
+        <add key="proxyPort" value="****" />
         <add key="authUser" value="****" />
         <add key="authPassword" value="****!" />
 </appSettings>
