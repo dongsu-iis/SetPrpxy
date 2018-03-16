@@ -63,7 +63,11 @@ namespace SetPrpxy
             }
             else
             {
-                registry.DeleteValue("AutoConfigURL");
+                var pac = registry.GetValue("AutoConfigURL");
+                if (pac != null)
+                {
+                    registry.DeleteValue("AutoConfigURL");
+                }             
             }
 
         }
