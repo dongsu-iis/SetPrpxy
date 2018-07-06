@@ -32,19 +32,29 @@ namespace SetPrpxy
 
         private void BtnEnable_Click(object sender, EventArgs e)
         {
-            SetEnvironment(true);
-
-            MessageBox.Show("プロキシが有効になりました",
-                            "Info");
+            try
+            {
+                SetEnvironment(true);
+                MessageBox.Show("プロキシが有効になりました","Info");
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+ 
         }
 
         private void BtnDisable_Click(object sender, EventArgs e)
         {
-            SetEnvironment(false);
-
-
-            MessageBox.Show("プロキシが無効になりました",
-                            "Info");
+            try
+            {
+                SetEnvironment(false);
+                MessageBox.Show("プロキシが無効になりました", "Info");
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void SetEnvironment(bool isValid)
