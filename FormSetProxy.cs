@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using Microsoft.Win32;
+using System;
 using System.Configuration;
-using Microsoft.Win32;
+using System.Windows.Forms;
 
 namespace SetPrpxy
 {
@@ -35,13 +28,13 @@ namespace SetPrpxy
             try
             {
                 SetEnvironment(true);
-                MessageBox.Show("プロキシが有効になりました","Info");
+                MessageBox.Show("プロキシが有効になりました", "Info");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
- 
+
         }
 
         private void BtnDisable_Click(object sender, EventArgs e)
@@ -51,7 +44,7 @@ namespace SetPrpxy
                 SetEnvironment(false);
                 MessageBox.Show("プロキシが無効になりました", "Info");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -59,25 +52,33 @@ namespace SetPrpxy
 
         private void SetEnvironment(bool isValid)
         {
-            var proxy = isValid ? proxyUrl : null;
-            int isEnable = isValid ? 1 :0;
 
-            Environment.SetEnvironmentVariable("HTTP_PROXY", proxy, EnvironmentVariableTarget.User);
-            Environment.SetEnvironmentVariable("HTTPS_PROXY", proxy, EnvironmentVariableTarget.User);
-
-            registry.SetValue("ProxyEnable", isEnable);
-            
             if (isValid)
             {
+                registry.SetValue("ProxyEnable", 1);
                 registry.SetValue("AutoConfigURL", pacUrl);
+
+                Environment.SetEnvironmentVariable("HTTP_PROXY", proxyUrl, EnvironmentVariableTarget.User);
+                Environment.SetEnvironmentVariable("HTTPS_PROXY", proxyUrl, EnvironmentVariableTarget.User);
+                Environment.SetEnvironmentVariable("chocolateyProxyUser", user, EnvironmentVariableTarget.User);
+                Environment.SetEnvironmentVariable("chocolateyProxyPassword", pass, EnvironmentVariableTarget.User);
+                Environment.SetEnvironmentVariable("chocolateyProxyLocation", $"{server}:{port}", EnvironmentVariableTarget.User);
             }
             else
             {
+                registry.SetValue("ProxyEnable", 0);
+
                 var pac = registry.GetValue("AutoConfigURL");
                 if (pac != null)
                 {
                     registry.DeleteValue("AutoConfigURL");
-                }             
+                }
+
+                Environment.SetEnvironmentVariable("HTTP_PROXY", null, EnvironmentVariableTarget.User);
+                Environment.SetEnvironmentVariable("HTTPS_PROXY", null, EnvironmentVariableTarget.User);
+                Environment.SetEnvironmentVariable("chocolateyProxyUser", null, EnvironmentVariableTarget.User);
+                Environment.SetEnvironmentVariable("chocolateyProxyPassword", null, EnvironmentVariableTarget.User);
+                Environment.SetEnvironmentVariable("chocolateyProxyLocation", null, EnvironmentVariableTarget.User);
             }
 
         }
